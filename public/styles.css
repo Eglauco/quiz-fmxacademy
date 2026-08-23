@@ -14,10 +14,10 @@
   --texto: #e9f6f0;
   --texto-suave: #7fa396;
 
-  --teal: #2ebd8c;
-  --teal-claro: #5fe3b3;
+  --teal: #2caf87; /* tom exato extraído da logo */
+  --teal-claro: #58d6ab;
   --teal-escuro: #123528;
-  --glow: 0 0 22px rgba(46, 189, 140, 0.35);
+  --glow: 0 0 22px rgba(44, 175, 135, 0.35);
 
   --erro: #ff7b72;
   --erro-fundo: #2b1417;
@@ -62,9 +62,9 @@ body::before {
   inset: 0;
   z-index: -1;
   background-image:
-    radial-gradient(ellipse 90% 40% at 50% -5%, rgba(46, 189, 140, 0.14), transparent 70%),
-    linear-gradient(rgba(46, 189, 140, 0.045) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(46, 189, 140, 0.045) 1px, transparent 1px);
+    radial-gradient(ellipse 90% 40% at 50% -5%, rgba(44, 175, 135, 0.14), transparent 70%),
+    linear-gradient(rgba(44, 175, 135, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(44, 175, 135, 0.045) 1px, transparent 1px);
   background-size: auto, 44px 44px, 44px 44px;
 }
 
@@ -112,7 +112,7 @@ body::before {
   display: block;
   width: min(210px, 60vw);
   height: auto;
-  filter: drop-shadow(0 0 18px rgba(46, 189, 140, 0.35));
+  filter: drop-shadow(0 0 18px rgba(44, 175, 135, 0.35));
 }
 
 .logo--ausente {
@@ -153,7 +153,7 @@ body::before {
   font-style: normal;
   display: block;
   color: var(--teal-claro);
-  text-shadow: 0 0 26px rgba(46, 189, 140, 0.55);
+  text-shadow: 0 0 26px rgba(44, 175, 135, 0.55);
 }
 
 .capa p {
@@ -284,7 +284,7 @@ a:focus-visible {
 .campo select:focus {
   outline: none;
   border-color: var(--teal);
-  box-shadow: 0 0 0 3px rgba(46, 189, 140, 0.18);
+  box-shadow: 0 0 0 3px rgba(44, 175, 135, 0.18);
 }
 
 /* ---------- perguntas ---------- */
@@ -326,7 +326,7 @@ a:focus-visible {
   width: 0;
   background: linear-gradient(90deg, var(--teal), var(--teal-claro));
   border-radius: 2px;
-  box-shadow: 0 0 12px rgba(46, 189, 140, 0.7);
+  box-shadow: 0 0 12px rgba(44, 175, 135, 0.7);
   transition: width 0.3s ease;
 }
 

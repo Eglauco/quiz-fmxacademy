@@ -17,9 +17,9 @@
       --linha: #1e3a30;
       --texto: #e9f6f0;
       --texto-suave: #7fa396;
-      --teal: #2ebd8c;
-      --teal-claro: #5fe3b3;
-      --glow: 0 0 22px rgba(46, 189, 140, 0.35);
+      --teal: #2caf87; /* tom exato extraído da logo */
+      --teal-claro: #58d6ab;
+      --glow: 0 0 22px rgba(44, 175, 135, 0.35);
       --dev: #3987e5;
       --qa: #199e70;
       --negocio: #c98500;
@@ -44,9 +44,9 @@
       inset: 0;
       z-index: -1;
       background-image:
-        radial-gradient(ellipse 90% 35% at 50% -5%, rgba(46, 189, 140, 0.12), transparent 70%),
-        linear-gradient(rgba(46, 189, 140, 0.04) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(46, 189, 140, 0.04) 1px, transparent 1px);
+        radial-gradient(ellipse 90% 35% at 50% -5%, rgba(44, 175, 135, 0.12), transparent 70%),
+        linear-gradient(rgba(44, 175, 135, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(44, 175, 135, 0.04) 1px, transparent 1px);
       background-size: auto, 44px 44px, 44px 44px;
     }
     .pagina { max-width: 1040px; margin: 0 auto; }
@@ -63,7 +63,7 @@
       width: 150px;
       height: auto;
       margin-bottom: 12px;
-      filter: drop-shadow(0 0 14px rgba(46, 189, 140, 0.3));
+      filter: drop-shadow(0 0 14px rgba(44, 175, 135, 0.3));
     }
     .logo--ausente { display: none; }
     .marca {
@@ -123,7 +123,7 @@
       line-height: 1.15;
       margin-top: 4px;
       color: var(--teal-claro);
-      text-shadow: 0 0 18px rgba(46, 189, 140, 0.35);
+      text-shadow: 0 0 18px rgba(44, 175, 135, 0.35);
     }
     .kpi .detalhe { font-size: 0.85rem; color: var(--texto-suave); }
 
@@ -149,7 +149,7 @@
 
     .barra-linha { display: grid; grid-template-columns: 150px 1fr 48px; gap: 10px; align-items: center; margin-bottom: 10px; }
     .barra-linha .nome { font-size: 0.88rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .barra-linha .trilha { height: 14px; background: rgba(46, 189, 140, 0.08); border-radius: 4px; }
+    .barra-linha .trilha { height: 14px; background: rgba(44, 175, 135, 0.08); border-radius: 4px; }
     .barra-linha .preenchido { height: 100%; border-radius: 0 4px 4px 0; min-width: 2px; }
     .barra-linha .valor {
       font-family: var(--fonte-mono);
