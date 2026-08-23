@@ -124,6 +124,18 @@
     return digitos;
   }
 
+  // Máscara (11) 91234-5678 aplicada enquanto digita; aceita colar com +55.
+  function mascararWhatsapp(valor) {
+    const digitos = normalizarWhatsapp(valor).slice(0, 11);
+    if (!digitos) return '';
+    if (digitos.length <= 2) return `(${digitos}`;
+    const ddd = digitos.slice(0, 2);
+    const numero = digitos.slice(2);
+    const corte = numero.length > 8 ? 5 : 4; // 9 dígitos → 91234-5678; 8 → 1234-5678
+    if (numero.length <= corte) return `(${ddd}) ${numero}`;
+    return `(${ddd}) ${numero.slice(0, corte)}-${numero.slice(corte)}`;
+  }
+
   function validarIdentificacao() {
     const nome = $('campo-nome').value.trim();
     const curso = $('campo-curso').value;
@@ -264,6 +276,10 @@
 
   $('campo-curso').addEventListener('change', () => {
     $('campo-curso-outro-wrap').hidden = $('campo-curso').value !== 'Outro';
+  });
+
+  $('campo-whatsapp').addEventListener('input', (evento) => {
+    evento.target.value = mascararWhatsapp(evento.target.value);
   });
 
   $('form-dados').addEventListener('submit', (evento) => {
