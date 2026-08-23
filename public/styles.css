@@ -1,0 +1,456 @@
+/* ============================================================
+   FMX Academy — Qual é o seu caminho tech?
+   Conceito: o questionário é tinta sobre papel (monocromático,
+   focado em leitura); a cor só entra no final, quando o resultado
+   inunda a tela com a cor da área do candidato.
+   ============================================================ */
+
+:root {
+  --papel: #faf7f2;
+  --tinta: #181a2e;
+  --tinta-suave: #5c5f73;
+  --linha: #e5e0d5;
+  --cartao: #ffffff;
+  --erro: #b3261e;
+  --erro-fundo: #fceeed;
+
+  /* cores por área (versão viva — chips e gráficos) */
+  --dev: #2563eb;
+  --qa: #059669;
+  --negocio: #d97706;
+  --dados: #7c3aed;
+  --ia: #db2777;
+  --hibrido: #0891b2; /* validado p/ daltonismo junto às demais cores de área */
+
+  /* versão profunda — fundo da tela de resultado (contraste com texto branco) */
+  --dev-fundo: #1d4ed8;
+  --qa-fundo: #047857;
+  --negocio-fundo: #b45309;
+  --dados-fundo: #6d28d9;
+  --ia-fundo: #be185d;
+  --hibrido-fundo: #155e75;
+
+  --fonte-display: 'Bricolage Grotesque', 'Segoe UI', system-ui, sans-serif;
+  --fonte-texto: 'Instrument Sans', 'Segoe UI', system-ui, sans-serif;
+
+  --raio: 18px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--fonte-texto);
+  background: var(--papel);
+  color: var(--tinta);
+  min-height: 100dvh;
+  line-height: 1.55;
+  transition: background-color 0.6s ease;
+}
+
+.container {
+  width: 100%;
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 20px;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+.tela {
+  display: none;
+  flex: 1;
+  flex-direction: column;
+}
+
+.tela.ativa {
+  display: flex;
+  animation: entrar 0.35s ease both;
+}
+
+@keyframes entrar {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tela.ativa {
+    animation: none;
+  }
+  body {
+    transition: none;
+  }
+}
+
+/* ---------- capa ---------- */
+
+.marca {
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--tinta-suave);
+}
+
+.capa {
+  justify-content: center;
+  gap: 22px;
+  padding: 28px 0;
+}
+
+.capa h1 {
+  font-family: var(--fonte-display);
+  font-weight: 800;
+  font-size: clamp(2.5rem, 11vw, 3.6rem);
+  line-height: 1.04;
+  letter-spacing: -0.02em;
+}
+
+.capa h1 em {
+  font-style: normal;
+  display: block;
+  color: var(--tinta);
+  -webkit-text-stroke: 1.5px var(--tinta);
+  -webkit-text-fill-color: transparent;
+}
+
+.capa p {
+  color: var(--tinta-suave);
+  font-size: 1.05rem;
+  max-width: 44ch;
+}
+
+.capa .nota {
+  font-size: 0.85rem;
+}
+
+/* ---------- botões ---------- */
+
+.botao {
+  font-family: var(--fonte-texto);
+  font-size: 1.05rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 999px;
+  padding: 16px 28px;
+  min-height: 56px;
+  cursor: pointer;
+  background: var(--tinta);
+  color: var(--papel);
+  transition: transform 0.12s ease, opacity 0.2s ease;
+  touch-action: manipulation;
+}
+
+.botao:active {
+  transform: scale(0.98);
+}
+
+.botao:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.botao--fantasma {
+  background: transparent;
+  color: var(--tinta);
+  border: 1.5px solid var(--linha);
+}
+
+.botao:focus-visible,
+.opcao:focus-visible,
+a:focus-visible {
+  outline: 3px solid var(--dev);
+  outline-offset: 3px;
+}
+
+/* ---------- formulário de identificação ---------- */
+
+.cabecalho-etapa {
+  padding: 8px 0 20px;
+}
+
+.form h2,
+.pergunta h2 {
+  font-family: var(--fonte-display);
+  font-weight: 700;
+  font-size: 1.6rem;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  margin-bottom: 6px;
+}
+
+.form .apoio {
+  color: var(--tinta-suave);
+  margin-bottom: 22px;
+}
+
+.campo {
+  margin-bottom: 18px;
+}
+
+.campo label {
+  display: block;
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin-bottom: 6px;
+}
+
+.campo .dica {
+  font-weight: 400;
+  color: var(--tinta-suave);
+}
+
+.campo input,
+.campo select {
+  width: 100%;
+  font: inherit;
+  font-size: 1.05rem;
+  color: var(--tinta);
+  background: var(--cartao);
+  border: 1.5px solid var(--linha);
+  border-radius: 14px;
+  padding: 14px 16px;
+  min-height: 54px;
+}
+
+.campo input:focus,
+.campo select:focus {
+  outline: none;
+  border-color: var(--tinta);
+}
+
+/* ---------- perguntas ---------- */
+
+.progresso {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  background: var(--papel);
+  padding: 14px 0 10px;
+}
+
+.progresso .info {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--tinta-suave);
+  margin-bottom: 8px;
+}
+
+.progresso .trilha {
+  height: 4px;
+  background: var(--linha);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.progresso .preenchido {
+  height: 100%;
+  width: 0;
+  background: var(--tinta);
+  border-radius: 2px;
+  transition: width 0.3s ease;
+}
+
+.pergunta {
+  padding: 16px 0 8px;
+  flex: 1;
+}
+
+.pergunta h2 {
+  font-size: 1.45rem;
+  margin-bottom: 20px;
+  text-wrap: balance;
+}
+
+.opcoes {
+  display: grid;
+  gap: 12px;
+  list-style: none;
+}
+
+.opcao {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  width: 100%;
+  text-align: left;
+  font: inherit;
+  font-size: 1rem;
+  color: var(--tinta);
+  background: var(--cartao);
+  border: 1.5px solid var(--linha);
+  border-radius: var(--raio);
+  padding: 16px;
+  min-height: 56px;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+  touch-action: manipulation;
+}
+
+.opcao .letra {
+  flex: none;
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 1.5px solid var(--linha);
+  font-family: var(--fonte-display);
+  font-weight: 700;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  transition: inherit;
+}
+
+.opcao[aria-pressed='true'] {
+  border-color: var(--tinta);
+  background: var(--tinta);
+  color: var(--papel);
+}
+
+.opcao[aria-pressed='true'] .letra {
+  border-color: var(--papel);
+}
+
+.navegacao {
+  display: flex;
+  gap: 12px;
+  padding: 18px 0 8px;
+  position: sticky;
+  bottom: 0;
+  background: linear-gradient(to top, var(--papel) 75%, transparent);
+}
+
+.navegacao .botao {
+  flex: 1;
+}
+
+.navegacao .botao--fantasma {
+  flex: 0 0 auto;
+  padding-inline: 20px;
+}
+
+/* ---------- erros ---------- */
+
+.erro {
+  display: none;
+  background: var(--erro-fundo);
+  color: var(--erro);
+  border-radius: 14px;
+  padding: 14px 16px;
+  font-size: 0.95rem;
+  margin-bottom: 16px;
+}
+
+.erro.visivel {
+  display: block;
+}
+
+.botao-corrigir {
+  margin-bottom: 16px;
+}
+
+/* foco programático (leitores de tela) não precisa de anel visível */
+[tabindex='-1']:focus {
+  outline: none;
+}
+
+/* ---------- resultado ---------- */
+
+body.resultado-dev { background: var(--dev-fundo); }
+body.resultado-qa { background: var(--qa-fundo); }
+body.resultado-negocio { background: var(--negocio-fundo); }
+body.resultado-dados { background: var(--dados-fundo); }
+body.resultado-ia { background: var(--ia-fundo); }
+body.resultado-hibrido { background: var(--hibrido-fundo); }
+
+.resultado {
+  color: #fff;
+  justify-content: center;
+  gap: 18px;
+  padding: 40px 0;
+  text-align: left;
+}
+
+.resultado .marca,
+.resultado .eyebrow {
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.resultado .emoji {
+  font-size: 4.5rem;
+  line-height: 1;
+}
+
+.resultado h2 {
+  font-family: var(--fonte-display);
+  font-weight: 800;
+  font-size: clamp(2.2rem, 9vw, 3rem);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+}
+
+.resultado .chip {
+  align-self: flex-start;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border: 1.5px solid rgba(255, 255, 255, 0.55);
+  border-radius: 999px;
+  padding: 6px 14px;
+}
+
+.resultado .descricao {
+  font-size: 1.08rem;
+  line-height: 1.6;
+}
+
+.resultado .porque {
+  background: rgba(255, 255, 255, 0.14);
+  border-radius: var(--raio);
+  padding: 18px;
+  font-size: 0.98rem;
+}
+
+.resultado .porque strong {
+  display: block;
+  font-size: 0.82rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.resultado .nota {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+/* ---------- utilitário ---------- */
+
+.carregando {
+  flex: 1;
+  display: grid;
+  place-items: center;
+  color: var(--tinta-suave);
+}

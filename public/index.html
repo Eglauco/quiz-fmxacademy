@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Qual é o seu caminho tech? · FMX Academy</title>
+  <meta name="description" content="Responda 19 perguntas rápidas e descubra o perfil de carreira tech com mais a sua cara." />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧭</text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="container">
+
+    <!-- Capa -->
+    <section id="tela-inicio" class="tela capa ativa">
+      <p class="marca">FMX Academy · Programa de Formação</p>
+      <h1>Qual é o seu <em>caminho tech</em>?</h1>
+      <p>São 19 perguntas rápidas — leva menos de 10 minutos. No final, você descobre na hora o perfil de carreira com mais a sua cara.</p>
+      <button class="botao" id="botao-comecar">Começar</button>
+      <p class="nota marca">Suas respostas ficam com a equipe da FMX Academy para o retorno do processo.</p>
+    </section>
+
+    <!-- Identificação -->
+    <section id="tela-dados" class="tela">
+      <div class="cabecalho-etapa">
+        <p class="marca">Antes de começar</p>
+      </div>
+      <form class="form" id="form-dados" novalidate>
+        <h2>Quem é você?</h2>
+        <p class="apoio">Usamos esses dados só para dar retorno sobre o processo seletivo.</p>
+
+        <div class="erro" id="erro-dados" role="alert"></div>
+
+        <div class="campo">
+          <label for="campo-nome">Nome completo</label>
+          <input id="campo-nome" name="nome" type="text" autocomplete="name" maxlength="120" required />
+        </div>
+
+        <div class="campo">
+          <label for="campo-curso">Curso</label>
+          <select id="campo-curso" name="curso" required>
+            <option value="" selected disabled>Selecione seu curso</option>
+          </select>
+        </div>
+
+        <div class="campo" id="campo-curso-outro-wrap" hidden>
+          <label for="campo-curso-outro">Qual é o seu curso?</label>
+          <input id="campo-curso-outro" name="cursoOutro" type="text" maxlength="120" />
+        </div>
+
+        <div class="campo">
+          <label for="campo-periodo">Período/semestre atual</label>
+          <select id="campo-periodo" name="periodo" required>
+            <option value="" selected disabled>Selecione o período</option>
+          </select>
+        </div>
+
+        <div class="campo">
+          <label for="campo-whatsapp">WhatsApp <span class="dica">(com DDD — é por ele que daremos o retorno)</span></label>
+          <input id="campo-whatsapp" name="whatsapp" type="tel" autocomplete="tel" inputmode="tel" placeholder="(11) 91234-5678" maxlength="20" required />
+        </div>
+
+        <div class="navegacao">
+          <button type="button" class="botao botao--fantasma" id="botao-voltar-inicio">Voltar</button>
+          <button type="submit" class="botao">Ir para as perguntas</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- Perguntas -->
+    <section id="tela-pergunta" class="tela">
+      <div class="progresso">
+        <div class="info">
+          <span id="progresso-etapa">Cenários</span>
+          <span id="progresso-contagem">1 de 19</span>
+        </div>
+        <div class="trilha"><div class="preenchido" id="progresso-barra"></div></div>
+      </div>
+      <div class="pergunta">
+        <h2 id="pergunta-texto" tabindex="-1"></h2>
+        <div class="erro" id="erro-envio" role="alert"></div>
+        <button type="button" class="botao botao--fantasma botao-corrigir" id="botao-corrigir-dados" hidden>Corrigir meus dados</button>
+        <ul class="opcoes" id="pergunta-opcoes"></ul>
+      </div>
+      <div class="navegacao">
+        <button type="button" class="botao botao--fantasma" id="botao-voltar">Voltar</button>
+        <button type="button" class="botao" id="botao-avancar" disabled>Continuar</button>
+      </div>
+    </section>
+
+    <!-- Resultado -->
+    <section id="tela-resultado" class="tela resultado">
+      <p class="marca eyebrow">Seu caminho tech</p>
+      <div class="emoji" id="resultado-emoji"></div>
+      <h2 id="resultado-titulo" tabindex="-1"></h2>
+      <span class="chip" id="resultado-area"></span>
+      <p class="descricao" id="resultado-descricao"></p>
+      <div class="porque">
+        <strong>Por que você caiu aqui</strong>
+        <span id="resultado-porque"></span>
+      </div>
+      <p class="nota">Resposta registrada! A equipe da FMX Academy vai falar com você pelo contato informado. 💬</p>
+    </section>
+
+    <!-- Carregando -->
+    <section id="tela-carregando" class="tela">
+      <div class="carregando"><p id="texto-carregando">Carregando…</p></div>
+    </section>
+
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>

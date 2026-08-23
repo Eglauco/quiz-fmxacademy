@@ -1,0 +1,442 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Relatórios da triagem · FMX Academy</title>
+  <meta name="robots" content="noindex" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧭</text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --papel: #faf7f2;
+      --tinta: #181a2e;
+      --tinta-suave: #5c5f73;
+      --linha: #e5e0d5;
+      --cartao: #ffffff;
+      --dev: #2563eb;
+      --qa: #059669;
+      --negocio: #d97706;
+      --dados: #7c3aed;
+      --ia: #db2777;
+      --hibrido: #0891b2;
+      --fonte-display: 'Bricolage Grotesque', 'Segoe UI', system-ui, sans-serif;
+      --fonte-texto: 'Instrument Sans', 'Segoe UI', system-ui, sans-serif;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: var(--fonte-texto);
+      background: var(--papel);
+      color: var(--tinta);
+      line-height: 1.5;
+      padding: 24px 16px 48px;
+    }
+    .pagina { max-width: 1040px; margin: 0 auto; }
+    header {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 24px;
+    }
+    .marca {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--tinta-suave);
+    }
+    h1 {
+      font-family: var(--fonte-display);
+      font-weight: 800;
+      font-size: 1.9rem;
+      letter-spacing: -0.01em;
+    }
+    .acoes { display: flex; gap: 10px; }
+    .botao {
+      font: inherit;
+      font-weight: 600;
+      font-size: 0.95rem;
+      border: 1.5px solid var(--tinta);
+      border-radius: 999px;
+      padding: 10px 20px;
+      background: var(--tinta);
+      color: var(--papel);
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+    }
+    .botao--fantasma { background: transparent; color: var(--tinta); border-color: var(--linha); }
+
+    .kpis {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+    .kpi {
+      background: var(--cartao);
+      border: 1.5px solid var(--linha);
+      border-radius: 16px;
+      padding: 18px;
+    }
+    .kpi .rotulo { font-size: 0.85rem; color: var(--tinta-suave); }
+    .kpi .valor {
+      font-family: var(--fonte-display);
+      font-weight: 800;
+      font-size: 2rem;
+      line-height: 1.15;
+      margin-top: 4px;
+    }
+    .kpi .detalhe { font-size: 0.85rem; color: var(--tinta-suave); }
+
+    .paineis {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+    .painel {
+      background: var(--cartao);
+      border: 1.5px solid var(--linha);
+      border-radius: 16px;
+      padding: 20px;
+    }
+    .painel h2 {
+      font-family: var(--fonte-display);
+      font-weight: 700;
+      font-size: 1.1rem;
+      margin-bottom: 4px;
+    }
+    .painel .apoio { font-size: 0.85rem; color: var(--tinta-suave); margin-bottom: 16px; }
+
+    .barra-linha { display: grid; grid-template-columns: 150px 1fr 48px; gap: 10px; align-items: center; margin-bottom: 10px; }
+    .barra-linha .nome { font-size: 0.88rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .barra-linha .trilha { height: 14px; background: #f1ede4; border-radius: 4px; }
+    .barra-linha .preenchido { height: 100%; border-radius: 0 4px 4px 0; min-width: 2px; }
+    .barra-linha .valor { font-size: 0.88rem; font-weight: 600; text-align: right; font-variant-numeric: tabular-nums; }
+    .vazio { color: var(--tinta-suave); font-size: 0.95rem; }
+
+    .qr { display: flex; flex-wrap: wrap; gap: 20px; align-items: center; }
+    .qr img { width: 200px; height: 200px; border: 1.5px solid var(--linha); border-radius: 12px; background: #fff; }
+    .qr .url { font-weight: 600; word-break: break-all; }
+    .qr p { font-size: 0.9rem; color: var(--tinta-suave); }
+
+    .tabela-wrap { overflow-x: auto; background: var(--cartao); border: 1.5px solid var(--linha); border-radius: 16px; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.9rem; min-width: 760px; }
+    th, td { text-align: left; padding: 12px 14px; border-bottom: 1px solid var(--linha); }
+    th { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--tinta-suave); }
+    tr:last-child td { border-bottom: none; }
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      border-radius: 999px;
+      padding: 3px 10px;
+      color: #fff;
+      white-space: nowrap;
+    }
+    td.num { font-variant-numeric: tabular-nums; }
+    tr.inativa td { opacity: 0.4; }
+    tr.inativa td:last-child { opacity: 1; }
+    .botao-mini {
+      font: inherit;
+      font-size: 0.8rem;
+      font-weight: 600;
+      border: 1.5px solid var(--linha);
+      border-radius: 999px;
+      background: transparent;
+      color: var(--tinta);
+      padding: 4px 12px;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .botao-mini:hover { border-color: var(--tinta); }
+    @media print {
+      .acoes, .paineis, .kpis, .tabela-wrap { display: none; }
+      body { padding: 0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="pagina">
+    <header>
+      <div>
+        <p class="marca">FMX Academy · Programa de Formação</p>
+        <h1>Relatórios da triagem</h1>
+      </div>
+      <div class="acoes">
+        <a class="botao botao--fantasma" href="/api/relatorio.csv" download>Exportar CSV</a>
+        <button class="botao" id="botao-atualizar">Atualizar</button>
+      </div>
+    </header>
+
+    <div class="kpis" id="kpis"></div>
+
+    <div class="paineis">
+      <section class="painel">
+        <h2>Candidatos por perfil</h2>
+        <p class="apoio">Resultado final atribuído pela regra de afinidade.</p>
+        <div id="grafico-perfis"></div>
+      </section>
+      <section class="painel">
+        <h2>Acerto técnico por área</h2>
+        <p class="apoio">% de acerto nas 2 questões objetivas de cada área.</p>
+        <div id="grafico-tecnico"></div>
+      </section>
+      <section class="painel">
+        <h2>Maturidade em IA</h2>
+        <p class="apoio">Distribuição do índice de familiaridade prática (0 a 6).</p>
+        <div id="grafico-ia"></div>
+      </section>
+      <section class="painel">
+        <h2>QR Code do questionário</h2>
+        <div class="qr" id="qr">
+          <p class="vazio">Gerando…</p>
+        </div>
+      </section>
+    </div>
+
+    <section>
+      <div class="tabela-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Data</th>
+              <th>Nome</th>
+              <th>Curso</th>
+              <th>Período</th>
+              <th>WhatsApp</th>
+              <th>Perfil</th>
+              <th>Índice IA</th>
+              <th>Situação</th>
+            </tr>
+          </thead>
+          <tbody id="tabela-candidatos"></tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const PERFIS = {
+      dev: { nome: 'Desenvolvimento', emoji: '💻', cor: 'var(--dev)' },
+      qa: { nome: 'Qualidade / QA', emoji: '🔍', cor: 'var(--qa)' },
+      negocio: { nome: 'Negócio / Requisitos', emoji: '🤝', cor: 'var(--negocio)' },
+      dados: { nome: 'Modelagem de Dados', emoji: '🗂️', cor: 'var(--dados)' },
+      ia: { nome: 'Engenharia de IA', emoji: '🤖', cor: 'var(--ia)' },
+      hibrido: { nome: 'Perfil Híbrido', emoji: '🧩', cor: 'var(--hibrido)' },
+    };
+    const AREAS = ['dev', 'qa', 'negocio', 'dados', 'ia'];
+
+    function el(tag, className, texto) {
+      const node = document.createElement(tag);
+      if (className) node.className = className;
+      if (texto !== undefined) node.textContent = texto;
+      return node;
+    }
+
+    function kpi(rotulo, valor, detalhe) {
+      const caixa = el('div', 'kpi');
+      caixa.appendChild(el('p', 'rotulo', rotulo));
+      caixa.appendChild(el('p', 'valor', valor));
+      if (detalhe) caixa.appendChild(el('p', 'detalhe', detalhe));
+      return caixa;
+    }
+
+    function linhaBarra({ nome, valor, texto, proporcao, cor, titulo }) {
+      const linha = el('div', 'barra-linha');
+      if (titulo) linha.title = titulo;
+      linha.appendChild(el('span', 'nome', nome));
+      const trilha = el('div', 'trilha');
+      const preenchido = el('div', 'preenchido');
+      preenchido.style.width = `${Math.max(0, Math.min(100, proporcao * 100))}%`;
+      preenchido.style.background = cor;
+      if (valor === 0) preenchido.style.display = 'none';
+      trilha.appendChild(preenchido);
+      linha.appendChild(trilha);
+      linha.appendChild(el('span', 'valor', texto));
+      return linha;
+    }
+
+    function preencherGrafico(container, linhas) {
+      container.innerHTML = '';
+      if (!linhas.length) {
+        container.appendChild(el('p', 'vazio', 'Sem dados ainda.'));
+        return;
+      }
+      for (const linha of linhas) container.appendChild(linhaBarra(linha));
+    }
+
+    function formatarNumero(n, casas = 1) {
+      return n.toLocaleString('pt-BR', { maximumFractionDigits: casas, minimumFractionDigits: 0 });
+    }
+
+    async function carregar() {
+      const resposta = await fetch('/api/relatorio');
+      if (!resposta.ok) throw new Error('Falha ao carregar o relatório.');
+      const dados = await resposta.json();
+
+      // KPIs
+      const kpis = document.getElementById('kpis');
+      kpis.innerHTML = '';
+      kpis.appendChild(
+        kpi(
+          'Respostas ativas',
+          String(dados.total),
+          dados.totalInativas ? `+ ${dados.totalInativas} desativada(s), fora dos cálculos` : ''
+        )
+      );
+      const maisComum = Object.entries(dados.porPerfil).sort((a, b) => b[1] - a[1])[0];
+      kpis.appendChild(
+        kpi(
+          'Perfil mais comum',
+          dados.total ? `${PERFIS[maisComum[0]].emoji} ${PERFIS[maisComum[0]].nome}` : '—',
+          dados.total ? `${maisComum[1]} candidato(s)` : ''
+        )
+      );
+      kpis.appendChild(
+        kpi('Índice médio de IA', dados.total ? formatarNumero(dados.mediaIndiceIA) : '—', 'escala de 0 a 6')
+      );
+      kpis.appendChild(
+        kpi(
+          'Reconhecem limitações de IA',
+          dados.total ? `${formatarNumero(dados.pctAcertouLimitacoesIA, 0)}%` : '—',
+          'acertaram a questão sobre alucinações'
+        )
+      );
+
+      // Candidatos por perfil (ordem fixa; cor segue o perfil)
+      const maxPerfil = Math.max(1, ...Object.values(dados.porPerfil));
+      preencherGrafico(
+        document.getElementById('grafico-perfis'),
+        Object.keys(PERFIS).map((chave) => ({
+          nome: `${PERFIS[chave].emoji} ${PERFIS[chave].nome}`,
+          valor: dados.porPerfil[chave] ?? 0,
+          texto: String(dados.porPerfil[chave] ?? 0),
+          proporcao: (dados.porPerfil[chave] ?? 0) / maxPerfil,
+          cor: PERFIS[chave].cor,
+          titulo: `${PERFIS[chave].nome}: ${dados.porPerfil[chave] ?? 0} candidato(s)`,
+        }))
+      );
+
+      // Acerto técnico por área
+      preencherGrafico(
+        document.getElementById('grafico-tecnico'),
+        AREAS.map((area) => ({
+          nome: `${PERFIS[area].emoji} ${PERFIS[area].nome}`,
+          valor: dados.pctAcertoTecnico[area],
+          texto: `${formatarNumero(dados.pctAcertoTecnico[area], 0)}%`,
+          proporcao: dados.pctAcertoTecnico[area] / 100,
+          cor: PERFIS[area].cor,
+          titulo: `${PERFIS[area].nome}: ${formatarNumero(dados.pctAcertoTecnico[area])}% de acerto`,
+        }))
+      );
+
+      // Distribuição do índice de IA (série única → uma cor)
+      const maxIndice = Math.max(1, ...dados.distribuicaoIndiceIA);
+      preencherGrafico(
+        document.getElementById('grafico-ia'),
+        dados.distribuicaoIndiceIA.map((quantidade, indice) => ({
+          nome: `Índice ${indice}`,
+          valor: quantidade,
+          texto: String(quantidade),
+          proporcao: quantidade / maxIndice,
+          cor: 'var(--tinta)',
+          titulo: `${quantidade} candidato(s) com índice ${indice}`,
+        }))
+      );
+
+      // Tabela de candidatos
+      const corpo = document.getElementById('tabela-candidatos');
+      corpo.innerHTML = '';
+      if (!dados.candidatos.length) {
+        const linha = el('tr');
+        const celula = el('td', 'vazio', 'Nenhuma resposta ainda — compartilhe o QR Code para começar.');
+        celula.colSpan = 8;
+        linha.appendChild(celula);
+        corpo.appendChild(linha);
+      }
+      for (const candidato of dados.candidatos) {
+        const linha = el('tr', candidato.ativo ? null : 'inativa');
+        linha.appendChild(
+          el('td', 'num', new Date(candidato.criadoEm).toLocaleString('pt-BR', { dateStyle: 'short', timeStyle: 'short' }))
+        );
+        linha.appendChild(el('td', null, candidato.nome));
+        linha.appendChild(el('td', null, candidato.curso));
+        linha.appendChild(el('td', null, candidato.periodo));
+        linha.appendChild(el('td', null, candidato.whatsapp));
+        const celulaPerfil = el('td');
+        const chip = el('span', 'chip', `${PERFIS[candidato.perfil].emoji} ${PERFIS[candidato.perfil].nome}`);
+        chip.style.background = PERFIS[candidato.perfil].cor;
+        celulaPerfil.appendChild(chip);
+        linha.appendChild(celulaPerfil);
+        linha.appendChild(el('td', 'num', String(candidato.indiceIA)));
+        const celulaAcao = el('td');
+        const botaoAcao = el('button', 'botao-mini', candidato.ativo ? 'Desativar' : 'Reativar');
+        botaoAcao.addEventListener('click', () => alternarAtivo(candidato));
+        celulaAcao.appendChild(botaoAcao);
+        linha.appendChild(celulaAcao);
+        corpo.appendChild(linha);
+      }
+    }
+
+    async function alternarAtivo(candidato) {
+      const mensagem = candidato.ativo
+        ? `Desativar a resposta de ${candidato.nome}?\n\nEla sai de todos os cálculos e este WhatsApp poderá responder o questionário novamente.`
+        : `Reativar a resposta de ${candidato.nome}?\n\nEla volta a contar nos cálculos e este WhatsApp volta a ficar bloqueado para novas respostas.`;
+      if (!window.confirm(mensagem)) return;
+      try {
+        const resposta = await fetch(`/api/relatorio/respostas/${candidato.id}`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ ativo: !candidato.ativo }),
+        });
+        const corpo = await resposta.json().catch(() => ({}));
+        if (!resposta.ok) {
+          window.alert(corpo.erro || 'Não foi possível atualizar a resposta. Tente novamente.');
+          return;
+        }
+        carregar();
+      } catch {
+        window.alert('Sem conexão com o servidor. Tente novamente.');
+      }
+    }
+
+    async function carregarQr() {
+      const container = document.getElementById('qr');
+      try {
+        const resposta = await fetch('/api/qrcode');
+        const dados = await resposta.json();
+        container.innerHTML = '';
+        const imagem = el('img');
+        imagem.src = dados.dataUrl;
+        imagem.alt = `QR Code do questionário: ${dados.url}`;
+        container.appendChild(imagem);
+        const info = el('div');
+        info.appendChild(el('p', 'url', dados.url));
+        info.appendChild(el('p', null, 'Aponte a câmera do celular para abrir o questionário.'));
+        const baixar = el('a', 'botao botao--fantasma', 'Baixar imagem');
+        baixar.href = dados.dataUrl;
+        baixar.download = 'qrcode-questionario-fmxacademy.png';
+        info.appendChild(baixar);
+        container.appendChild(info);
+      } catch {
+        container.innerHTML = '<p class="vazio">Não foi possível gerar o QR Code.</p>';
+      }
+    }
+
+    document.getElementById('botao-atualizar').addEventListener('click', carregar);
+    carregar().catch(() => {
+      document.getElementById('kpis').innerHTML =
+        '<p class="vazio">Não foi possível carregar o relatório. Atualize a página.</p>';
+    });
+    carregarQr();
+  </script>
+</body>
+</html>
