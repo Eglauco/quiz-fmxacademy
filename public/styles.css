@@ -55,6 +55,163 @@ body {
   line-height: 1.55;
 }
 
+/* ---------- pré-loader (intro tecnológica) ---------- */
+
+.preloader {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 26px;
+  padding: 24px;
+  background: var(--fundo);
+  overflow: hidden;
+  animation: preloader-sair 0.6s ease 2.6s forwards;
+}
+
+/* grade técnica esmaecida nas bordas */
+.preloader::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(44, 175, 135, 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(44, 175, 135, 0.07) 1px, transparent 1px);
+  background-size: 40px 40px;
+  -webkit-mask-image: radial-gradient(ellipse 72% 62% at 50% 50%, #000, transparent 78%);
+  mask-image: radial-gradient(ellipse 72% 62% at 50% 50%, #000, transparent 78%);
+}
+
+/* varredura horizontal de "scan" */
+.preloader::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 42%;
+  top: -42%;
+  background: linear-gradient(to bottom, transparent, rgba(44, 175, 135, 0.12), transparent);
+  animation: preloader-varredura 2.3s ease-in-out infinite;
+}
+
+@keyframes preloader-varredura {
+  0% { top: -42%; }
+  100% { top: 100%; }
+}
+
+.preloader__nucleo {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+}
+
+.preloader__logo {
+  width: min(240px, 66vw);
+  height: auto;
+  filter: drop-shadow(0 0 26px rgba(44, 175, 135, 0.5));
+  opacity: 0;
+  transform: scale(0.92);
+  animation:
+    preloader-logo 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) 0.2s forwards,
+    preloader-pulso 2s ease-in-out 1.2s infinite;
+}
+
+@keyframes preloader-logo {
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes preloader-pulso {
+  0%, 100% { filter: drop-shadow(0 0 20px rgba(44, 175, 135, 0.4)); }
+  50% { filter: drop-shadow(0 0 34px rgba(44, 175, 135, 0.75)); }
+}
+
+.preloader__frase {
+  position: relative;
+  z-index: 1;
+  font-family: var(--fonte-display);
+  font-weight: 700;
+  font-size: clamp(1.2rem, 5.4vw, 1.65rem);
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  text-align: center;
+  text-wrap: balance;
+  max-width: 18ch;
+  color: var(--texto);
+  opacity: 0;
+  transform: translateY(10px);
+  animation: preloader-surgir 0.8s ease 0.9s forwards;
+}
+
+.preloader__frase b {
+  color: var(--teal-claro);
+  font-weight: 700;
+  text-shadow: 0 0 22px rgba(44, 175, 135, 0.55);
+}
+
+.preloader__barra {
+  position: relative;
+  z-index: 1;
+  width: min(240px, 66vw);
+  height: 3px;
+  background: var(--linha);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.preloader__barra span {
+  display: block;
+  height: 100%;
+  width: 0;
+  background: linear-gradient(90deg, var(--teal), var(--teal-claro));
+  box-shadow: 0 0 12px rgba(44, 175, 135, 0.8);
+  animation: preloader-barra 2.3s ease-in-out 0.3s forwards;
+}
+
+@keyframes preloader-barra {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+.preloader__status {
+  position: relative;
+  z-index: 1;
+  font-family: var(--fonte-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--texto-suave);
+  opacity: 0;
+  animation: preloader-surgir 0.6s ease 1.2s forwards;
+}
+
+.preloader__status::after {
+  content: '_';
+  animation: preloader-cursor 0.8s steps(1) infinite;
+}
+
+@keyframes preloader-surgir {
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes preloader-cursor {
+  50% { opacity: 0; }
+}
+
+@keyframes preloader-sair {
+  to { opacity: 0; visibility: hidden; }
+}
+
+/* Movimento reduzido: sem intro animada. */
+@media (prefers-reduced-motion: reduce) {
+  .preloader {
+    display: none;
+  }
+}
+
 /* grade técnica + halo teal no topo, fixos e baratos de renderizar */
 body::before {
   content: '';

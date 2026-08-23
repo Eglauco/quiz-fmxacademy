@@ -27,6 +27,14 @@
 
   const movimentoReduzido = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  // Pré-loader: a saída é feita em CSS (robusta mesmo sem JS); aqui só removemos
+  // o nó do DOM depois da animação, e o dispensamos na hora sob movimento reduzido.
+  const preloader = $('preloader');
+  if (preloader) {
+    if (movimentoReduzido) preloader.remove();
+    else setTimeout(() => preloader.remove(), 3300);
+  }
+
   function mostrarTela(nome) {
     for (const tela of Object.values(telas)) tela.classList.remove('ativa');
     telas[nome].classList.add('ativa');
