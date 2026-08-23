@@ -32,7 +32,7 @@
   const preloader = $('preloader');
   if (preloader) {
     if (movimentoReduzido) preloader.remove();
-    else setTimeout(() => preloader.remove(), 3300);
+    else setTimeout(() => preloader.remove(), 4100);
   }
 
   function mostrarTela(nome) {

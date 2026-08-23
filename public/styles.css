@@ -69,7 +69,7 @@ body {
   padding: 24px;
   background: var(--fundo);
   overflow: hidden;
-  animation: preloader-sair 0.6s ease 2.6s forwards;
+  animation: preloader-sair 0.6s ease 3.4s forwards;
 }
 
 /* grade técnica esmaecida nas bordas */
@@ -168,7 +168,7 @@ body {
   width: 0;
   background: linear-gradient(90deg, var(--teal), var(--teal-claro));
   box-shadow: 0 0 12px rgba(44, 175, 135, 0.8);
-  animation: preloader-barra 2.3s ease-in-out 0.3s forwards;
+  animation: preloader-barra 3.1s ease-in-out 0.3s forwards;
 }
 
 @keyframes preloader-barra {
