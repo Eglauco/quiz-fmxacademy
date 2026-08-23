@@ -6,9 +6,10 @@
   <title>Qual é o seu caminho tech? · FMX Academy</title>
   <meta name="description" content="Responda 19 perguntas rápidas e descubra o perfil de carreira tech com mais a sua cara." />
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧭</text></svg>" />
+  <meta name="theme-color" content="#07100d" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -16,7 +17,8 @@
 
     <!-- Capa -->
     <section id="tela-inicio" class="tela capa ativa">
-      <p class="marca">FMX Academy · Programa de Formação</p>
+      <img class="logo" src="img/logo.png" alt="FMX Academy" onerror="this.classList.add('logo--ausente')" />
+      <p class="marca">Programa de Formação · Estágio</p>
       <h1>Qual é o seu <em>caminho tech</em>?</h1>
       <p>São 19 perguntas rápidas — leva menos de 10 minutos. No final, você descobre na hora o perfil de carreira com mais a sua cara.</p>
       <button class="botao" id="botao-comecar">Começar</button>
@@ -26,6 +28,7 @@
     <!-- Identificação -->
     <section id="tela-dados" class="tela">
       <div class="cabecalho-etapa">
+        <img class="logo logo--mini" src="img/logo.png" alt="FMX Academy" onerror="this.classList.add('logo--ausente')" />
         <p class="marca">Antes de começar</p>
       </div>
       <form class="form" id="form-dados" novalidate>
@@ -93,6 +96,7 @@
 
     <!-- Resultado -->
     <section id="tela-resultado" class="tela resultado">
+      <img class="logo logo--mini" src="img/logo.png" alt="FMX Academy" onerror="this.classList.add('logo--ausente')" />
       <p class="marca eyebrow">Seu caminho tech</p>
       <div class="emoji" id="resultado-emoji"></div>
       <h2 id="resultado-titulo" tabindex="-1"></h2>

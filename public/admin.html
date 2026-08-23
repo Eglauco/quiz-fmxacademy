@@ -6,32 +6,48 @@
   <title>Relatórios da triagem · FMX Academy</title>
   <meta name="robots" content="noindex" />
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧭</text></svg>" />
+  <meta name="theme-color" content="#07100d" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --papel: #faf7f2;
-      --tinta: #181a2e;
-      --tinta-suave: #5c5f73;
-      --linha: #e5e0d5;
-      --cartao: #ffffff;
-      --dev: #2563eb;
-      --qa: #059669;
-      --negocio: #d97706;
-      --dados: #7c3aed;
-      --ia: #db2777;
-      --hibrido: #0891b2;
-      --fonte-display: 'Bricolage Grotesque', 'Segoe UI', system-ui, sans-serif;
-      --fonte-texto: 'Instrument Sans', 'Segoe UI', system-ui, sans-serif;
+      --fundo: #07100d;
+      --superficie: #0d1a15;
+      --linha: #1e3a30;
+      --texto: #e9f6f0;
+      --texto-suave: #7fa396;
+      --teal: #2ebd8c;
+      --teal-claro: #5fe3b3;
+      --glow: 0 0 22px rgba(46, 189, 140, 0.35);
+      --dev: #3987e5;
+      --qa: #199e70;
+      --negocio: #c98500;
+      --dados: #9085e9;
+      --ia: #d55181;
+      --hibrido: #008300;
+      --fonte-display: 'Space Grotesk', 'Segoe UI', system-ui, sans-serif;
+      --fonte-texto: 'IBM Plex Sans', 'Segoe UI', system-ui, sans-serif;
+      --fonte-mono: 'IBM Plex Mono', Consolas, monospace;
     }
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: var(--fonte-texto);
-      background: var(--papel);
-      color: var(--tinta);
+      background: var(--fundo);
+      color: var(--texto);
       line-height: 1.5;
       padding: 24px 16px 48px;
+    }
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      background-image:
+        radial-gradient(ellipse 90% 35% at 50% -5%, rgba(46, 189, 140, 0.12), transparent 70%),
+        linear-gradient(rgba(46, 189, 140, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(46, 189, 140, 0.04) 1px, transparent 1px);
+      background-size: auto, 44px 44px, 44px 44px;
     }
     .pagina { max-width: 1040px; margin: 0 auto; }
     header {
@@ -42,34 +58,44 @@
       justify-content: space-between;
       margin-bottom: 24px;
     }
+    .logo {
+      display: block;
+      width: 150px;
+      height: auto;
+      margin-bottom: 12px;
+      filter: drop-shadow(0 0 14px rgba(46, 189, 140, 0.3));
+    }
+    .logo--ausente { display: none; }
     .marca {
-      font-size: 0.75rem;
-      font-weight: 600;
-      letter-spacing: 0.14em;
+      font-family: var(--fonte-mono);
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.22em;
       text-transform: uppercase;
-      color: var(--tinta-suave);
+      color: var(--teal);
     }
     h1 {
       font-family: var(--fonte-display);
-      font-weight: 800;
+      font-weight: 700;
       font-size: 1.9rem;
       letter-spacing: -0.01em;
     }
     .acoes { display: flex; gap: 10px; }
     .botao {
-      font: inherit;
-      font-weight: 600;
+      font-family: var(--fonte-display);
+      font-weight: 700;
       font-size: 0.95rem;
-      border: 1.5px solid var(--tinta);
-      border-radius: 999px;
+      border: 1px solid transparent;
+      border-radius: 10px;
       padding: 10px 20px;
-      background: var(--tinta);
-      color: var(--papel);
+      background: var(--teal);
+      color: #05231a;
+      box-shadow: var(--glow);
       cursor: pointer;
       text-decoration: none;
       display: inline-block;
     }
-    .botao--fantasma { background: transparent; color: var(--tinta); border-color: var(--linha); }
+    .botao--fantasma { background: transparent; color: var(--texto); border-color: var(--linha); box-shadow: none; }
 
     .kpis {
       display: grid;
@@ -78,20 +104,28 @@
       margin-bottom: 24px;
     }
     .kpi {
-      background: var(--cartao);
-      border: 1.5px solid var(--linha);
-      border-radius: 16px;
+      background: var(--superficie);
+      border: 1px solid var(--linha);
+      border-radius: 14px;
       padding: 18px;
     }
-    .kpi .rotulo { font-size: 0.85rem; color: var(--tinta-suave); }
+    .kpi .rotulo {
+      font-family: var(--fonte-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--texto-suave);
+    }
     .kpi .valor {
       font-family: var(--fonte-display);
-      font-weight: 800;
+      font-weight: 700;
       font-size: 2rem;
       line-height: 1.15;
       margin-top: 4px;
+      color: var(--teal-claro);
+      text-shadow: 0 0 18px rgba(46, 189, 140, 0.35);
     }
-    .kpi .detalhe { font-size: 0.85rem; color: var(--tinta-suave); }
+    .kpi .detalhe { font-size: 0.85rem; color: var(--texto-suave); }
 
     .paineis {
       display: grid;
@@ -100,9 +134,9 @@
       margin-bottom: 24px;
     }
     .painel {
-      background: var(--cartao);
-      border: 1.5px solid var(--linha);
-      border-radius: 16px;
+      background: var(--superficie);
+      border: 1px solid var(--linha);
+      border-radius: 14px;
       padding: 20px;
     }
     .painel h2 {
@@ -111,24 +145,44 @@
       font-size: 1.1rem;
       margin-bottom: 4px;
     }
-    .painel .apoio { font-size: 0.85rem; color: var(--tinta-suave); margin-bottom: 16px; }
+    .painel .apoio { font-size: 0.85rem; color: var(--texto-suave); margin-bottom: 16px; }
 
     .barra-linha { display: grid; grid-template-columns: 150px 1fr 48px; gap: 10px; align-items: center; margin-bottom: 10px; }
     .barra-linha .nome { font-size: 0.88rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .barra-linha .trilha { height: 14px; background: #f1ede4; border-radius: 4px; }
+    .barra-linha .trilha { height: 14px; background: rgba(46, 189, 140, 0.08); border-radius: 4px; }
     .barra-linha .preenchido { height: 100%; border-radius: 0 4px 4px 0; min-width: 2px; }
-    .barra-linha .valor { font-size: 0.88rem; font-weight: 600; text-align: right; font-variant-numeric: tabular-nums; }
-    .vazio { color: var(--tinta-suave); font-size: 0.95rem; }
+    .barra-linha .valor {
+      font-family: var(--fonte-mono);
+      font-size: 0.85rem;
+      font-weight: 500;
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+    }
+    .vazio { color: var(--texto-suave); font-size: 0.95rem; }
 
     .qr { display: flex; flex-wrap: wrap; gap: 20px; align-items: center; }
-    .qr img { width: 200px; height: 200px; border: 1.5px solid var(--linha); border-radius: 12px; background: #fff; }
-    .qr .url { font-weight: 600; word-break: break-all; }
-    .qr p { font-size: 0.9rem; color: var(--tinta-suave); }
+    .qr img {
+      width: 200px;
+      height: 200px;
+      border-radius: 12px;
+      background: #fff;
+      padding: 8px;
+      box-shadow: var(--glow);
+    }
+    .qr .url { font-family: var(--fonte-mono); font-size: 0.9rem; font-weight: 500; word-break: break-all; color: var(--teal-claro); }
+    .qr p { font-size: 0.9rem; color: var(--texto-suave); }
 
-    .tabela-wrap { overflow-x: auto; background: var(--cartao); border: 1.5px solid var(--linha); border-radius: 16px; }
+    .tabela-wrap { overflow-x: auto; background: var(--superficie); border: 1px solid var(--linha); border-radius: 14px; }
     table { width: 100%; border-collapse: collapse; font-size: 0.9rem; min-width: 760px; }
     th, td { text-align: left; padding: 12px 14px; border-bottom: 1px solid var(--linha); }
-    th { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--tinta-suave); }
+    th {
+      font-family: var(--fonte-mono);
+      font-weight: 500;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--texto-suave);
+    }
     tr:last-child td { border-bottom: none; }
     .chip {
       display: inline-flex;
@@ -136,30 +190,34 @@
       gap: 6px;
       font-size: 0.82rem;
       font-weight: 600;
+      border: 1px solid var(--cor, var(--linha));
       border-radius: 999px;
       padding: 3px 10px;
-      color: #fff;
+      color: var(--texto);
+      background: transparent;
       white-space: nowrap;
+      box-shadow: 0 0 10px color-mix(in srgb, var(--cor, transparent) 30%, transparent);
     }
-    td.num { font-variant-numeric: tabular-nums; }
+    td.num { font-family: var(--fonte-mono); font-variant-numeric: tabular-nums; }
     tr.inativa td { opacity: 0.4; }
     tr.inativa td:last-child { opacity: 1; }
     .botao-mini {
       font: inherit;
       font-size: 0.8rem;
       font-weight: 600;
-      border: 1.5px solid var(--linha);
+      border: 1px solid var(--linha);
       border-radius: 999px;
       background: transparent;
-      color: var(--tinta);
+      color: var(--texto);
       padding: 4px 12px;
       cursor: pointer;
       white-space: nowrap;
     }
-    .botao-mini:hover { border-color: var(--tinta); }
+    .botao-mini:hover { border-color: var(--teal); color: var(--teal-claro); }
     @media print {
       .acoes, .paineis, .kpis, .tabela-wrap { display: none; }
-      body { padding: 0; }
+      body { padding: 0; background: #fff; }
+      body::before { display: none; }
     }
   </style>
 </head>
@@ -167,7 +225,8 @@
   <div class="pagina">
     <header>
       <div>
-        <p class="marca">FMX Academy · Programa de Formação</p>
+        <img class="logo" src="img/logo.png" alt="FMX Academy" onerror="this.classList.add('logo--ausente')" />
+        <p class="marca">Programa de Formação · Triagem</p>
         <h1>Relatórios da triagem</h1>
       </div>
       <div class="acoes">
@@ -347,7 +406,7 @@
           valor: quantidade,
           texto: String(quantidade),
           proporcao: quantidade / maxIndice,
-          cor: 'var(--tinta)',
+          cor: 'var(--teal)',
           titulo: `${quantidade} candidato(s) com índice ${indice}`,
         }))
       );
@@ -373,7 +432,7 @@
         linha.appendChild(el('td', null, candidato.whatsapp));
         const celulaPerfil = el('td');
         const chip = el('span', 'chip', `${PERFIS[candidato.perfil].emoji} ${PERFIS[candidato.perfil].nome}`);
-        chip.style.background = PERFIS[candidato.perfil].cor;
+        chip.style.setProperty('--cor', PERFIS[candidato.perfil].cor);
         celulaPerfil.appendChild(chip);
         linha.appendChild(celulaPerfil);
         linha.appendChild(el('td', 'num', String(candidato.indiceIA)));

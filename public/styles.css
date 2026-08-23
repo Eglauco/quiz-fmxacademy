@@ -1,39 +1,40 @@
 /* ============================================================
    FMX Academy — Qual é o seu caminho tech?
-   Conceito: o questionário é tinta sobre papel (monocromático,
-   focado em leitura); a cor só entra no final, quando o resultado
-   inunda a tela com a cor da área do candidato.
+   Conceito "futurista equilibrado": fundo quase-preto esverdeado
+   com grade técnica sutil, teal da marca (#2EBD8C) como energia
+   da interface (botões, progresso, brilhos) e as cores por área
+   reservadas para os dados (resultado e gráficos).
    ============================================================ */
 
 :root {
-  --papel: #faf7f2;
-  --tinta: #181a2e;
-  --tinta-suave: #5c5f73;
-  --linha: #e5e0d5;
-  --cartao: #ffffff;
-  --erro: #b3261e;
-  --erro-fundo: #fceeed;
+  --fundo: #07100d;
+  --superficie: #0d1a15;
+  --superficie-2: #122a21;
+  --linha: #1e3a30;
+  --texto: #e9f6f0;
+  --texto-suave: #7fa396;
 
-  /* cores por área (versão viva — chips e gráficos) */
-  --dev: #2563eb;
-  --qa: #059669;
-  --negocio: #d97706;
-  --dados: #7c3aed;
-  --ia: #db2777;
-  --hibrido: #0891b2; /* validado p/ daltonismo junto às demais cores de área */
+  --teal: #2ebd8c;
+  --teal-claro: #5fe3b3;
+  --teal-escuro: #123528;
+  --glow: 0 0 22px rgba(46, 189, 140, 0.35);
 
-  /* versão profunda — fundo da tela de resultado (contraste com texto branco) */
-  --dev-fundo: #1d4ed8;
-  --qa-fundo: #047857;
-  --negocio-fundo: #b45309;
-  --dados-fundo: #6d28d9;
-  --ia-fundo: #be185d;
-  --hibrido-fundo: #155e75;
+  --erro: #ff7b72;
+  --erro-fundo: #2b1417;
 
-  --fonte-display: 'Bricolage Grotesque', 'Segoe UI', system-ui, sans-serif;
-  --fonte-texto: 'Instrument Sans', 'Segoe UI', system-ui, sans-serif;
+  /* cores por área — passos validados p/ daltonismo sobre superfície escura */
+  --dev: #3987e5;
+  --qa: #199e70;
+  --negocio: #c98500;
+  --dados: #9085e9;
+  --ia: #d55181;
+  --hibrido: #008300;
 
-  --raio: 18px;
+  --fonte-display: 'Space Grotesk', 'Segoe UI', system-ui, sans-serif;
+  --fonte-texto: 'IBM Plex Sans', 'Segoe UI', system-ui, sans-serif;
+  --fonte-mono: 'IBM Plex Mono', Consolas, monospace;
+
+  --raio: 14px;
 }
 
 * {
@@ -48,11 +49,23 @@ html {
 
 body {
   font-family: var(--fonte-texto);
-  background: var(--papel);
-  color: var(--tinta);
+  background: var(--fundo);
+  color: var(--texto);
   min-height: 100dvh;
   line-height: 1.55;
-  transition: background-color 0.6s ease;
+}
+
+/* grade técnica + halo teal no topo, fixos e baratos de renderizar */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background-image:
+    radial-gradient(ellipse 90% 40% at 50% -5%, rgba(46, 189, 140, 0.14), transparent 70%),
+    linear-gradient(rgba(46, 189, 140, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(46, 189, 140, 0.045) 1px, transparent 1px);
+  background-size: auto, 44px 44px, 44px 44px;
 }
 
 .container {
@@ -91,20 +104,36 @@ body {
   .tela.ativa {
     animation: none;
   }
-  body {
-    transition: none;
-  }
+}
+
+/* ---------- marca ---------- */
+
+.logo {
+  display: block;
+  width: min(210px, 60vw);
+  height: auto;
+  filter: drop-shadow(0 0 18px rgba(46, 189, 140, 0.35));
+}
+
+.logo--ausente {
+  display: none;
+}
+
+.logo--mini {
+  width: 110px;
+  filter: none;
+}
+
+.marca {
+  font-family: var(--fonte-mono);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--teal);
 }
 
 /* ---------- capa ---------- */
-
-.marca {
-  font-size: 0.78rem;
-  font-weight: 600;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--tinta-suave);
-}
 
 .capa {
   justify-content: center;
@@ -114,44 +143,52 @@ body {
 
 .capa h1 {
   font-family: var(--fonte-display);
-  font-weight: 800;
-  font-size: clamp(2.5rem, 11vw, 3.6rem);
-  line-height: 1.04;
+  font-weight: 700;
+  font-size: clamp(2.4rem, 10.5vw, 3.4rem);
+  line-height: 1.06;
   letter-spacing: -0.02em;
 }
 
 .capa h1 em {
   font-style: normal;
   display: block;
-  color: var(--tinta);
-  -webkit-text-stroke: 1.5px var(--tinta);
-  -webkit-text-fill-color: transparent;
+  color: var(--teal-claro);
+  text-shadow: 0 0 26px rgba(46, 189, 140, 0.55);
 }
 
 .capa p {
-  color: var(--tinta-suave);
+  color: var(--texto-suave);
   font-size: 1.05rem;
   max-width: 44ch;
 }
 
+.capa .marca {
+  color: var(--teal);
+  font-size: 0.72rem;
+}
+
 .capa .nota {
-  font-size: 0.85rem;
+  color: var(--texto-suave);
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
 }
 
 /* ---------- botões ---------- */
 
 .botao {
-  font-family: var(--fonte-texto);
-  font-size: 1.05rem;
-  font-weight: 600;
-  border: none;
-  border-radius: 999px;
+  font-family: var(--fonte-display);
+  font-size: 1.02rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  border: 1px solid transparent;
+  border-radius: 12px;
   padding: 16px 28px;
   min-height: 56px;
   cursor: pointer;
-  background: var(--tinta);
-  color: var(--papel);
-  transition: transform 0.12s ease, opacity 0.2s ease;
+  background: var(--teal);
+  color: #05231a;
+  box-shadow: var(--glow);
+  transition: transform 0.12s ease, box-shadow 0.2s ease, opacity 0.2s ease;
   touch-action: manipulation;
 }
 
@@ -160,27 +197,37 @@ body {
 }
 
 .botao:disabled {
-  opacity: 0.35;
+  opacity: 0.3;
   cursor: not-allowed;
+  box-shadow: none;
 }
 
 .botao--fantasma {
   background: transparent;
-  color: var(--tinta);
-  border: 1.5px solid var(--linha);
+  color: var(--texto);
+  border-color: var(--linha);
+  box-shadow: none;
 }
 
 .botao:focus-visible,
 .opcao:focus-visible,
 a:focus-visible {
-  outline: 3px solid var(--dev);
+  outline: 2px solid var(--teal-claro);
   outline-offset: 3px;
+}
+
+[tabindex='-1']:focus {
+  outline: none;
 }
 
 /* ---------- formulário de identificação ---------- */
 
 .cabecalho-etapa {
   padding: 8px 0 20px;
+}
+
+.cabecalho-etapa .logo--mini {
+  margin-bottom: 10px;
 }
 
 .form h2,
@@ -194,7 +241,7 @@ a:focus-visible {
 }
 
 .form .apoio {
-  color: var(--tinta-suave);
+  color: var(--texto-suave);
   margin-bottom: 22px;
 }
 
@@ -211,7 +258,7 @@ a:focus-visible {
 
 .campo .dica {
   font-weight: 400;
-  color: var(--tinta-suave);
+  color: var(--texto-suave);
 }
 
 .campo input,
@@ -219,18 +266,25 @@ a:focus-visible {
   width: 100%;
   font: inherit;
   font-size: 1.05rem;
-  color: var(--tinta);
-  background: var(--cartao);
-  border: 1.5px solid var(--linha);
-  border-radius: 14px;
+  color: var(--texto);
+  background: var(--superficie);
+  border: 1px solid var(--linha);
+  border-radius: 12px;
   padding: 14px 16px;
   min-height: 54px;
+  color-scheme: dark;
+}
+
+.campo input::placeholder {
+  color: var(--texto-suave);
+  opacity: 0.6;
 }
 
 .campo input:focus,
 .campo select:focus {
   outline: none;
-  border-color: var(--tinta);
+  border-color: var(--teal);
+  box-shadow: 0 0 0 3px rgba(46, 189, 140, 0.18);
 }
 
 /* ---------- perguntas ---------- */
@@ -239,20 +293,25 @@ a:focus-visible {
   position: sticky;
   top: 0;
   z-index: 5;
-  background: var(--papel);
-  padding: 14px 0 10px;
+  background: linear-gradient(to bottom, var(--fundo) 82%, transparent);
+  padding: 14px 0 12px;
 }
 
 .progresso .info {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  font-size: 0.82rem;
-  font-weight: 600;
-  letter-spacing: 0.06em;
+  font-family: var(--fonte-mono);
+  font-size: 0.74rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--tinta-suave);
+  color: var(--texto-suave);
   margin-bottom: 8px;
+}
+
+.progresso .info #progresso-contagem {
+  color: var(--teal);
 }
 
 .progresso .trilha {
@@ -265,8 +324,9 @@ a:focus-visible {
 .progresso .preenchido {
   height: 100%;
   width: 0;
-  background: var(--tinta);
+  background: linear-gradient(90deg, var(--teal), var(--teal-claro));
   border-radius: 2px;
+  box-shadow: 0 0 12px rgba(46, 189, 140, 0.7);
   transition: width 0.3s ease;
 }
 
@@ -276,7 +336,7 @@ a:focus-visible {
 }
 
 .pergunta h2 {
-  font-size: 1.45rem;
+  font-size: 1.42rem;
   margin-bottom: 20px;
   text-wrap: balance;
 }
@@ -295,14 +355,14 @@ a:focus-visible {
   text-align: left;
   font: inherit;
   font-size: 1rem;
-  color: var(--tinta);
-  background: var(--cartao);
-  border: 1.5px solid var(--linha);
+  color: var(--texto);
+  background: var(--superficie);
+  border: 1px solid var(--linha);
   border-radius: var(--raio);
   padding: 16px;
   min-height: 56px;
   cursor: pointer;
-  transition: border-color 0.15s ease, background-color 0.15s ease;
+  transition: border-color 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
   touch-action: manipulation;
 }
 
@@ -312,23 +372,26 @@ a:focus-visible {
   height: 28px;
   display: grid;
   place-items: center;
-  border-radius: 50%;
-  border: 1.5px solid var(--linha);
-  font-family: var(--fonte-display);
-  font-weight: 700;
+  border-radius: 8px;
+  border: 1px solid var(--linha);
+  font-family: var(--fonte-mono);
+  font-weight: 600;
   font-size: 0.85rem;
   text-transform: uppercase;
+  color: var(--texto-suave);
   transition: inherit;
 }
 
 .opcao[aria-pressed='true'] {
-  border-color: var(--tinta);
-  background: var(--tinta);
-  color: var(--papel);
+  border-color: var(--teal);
+  background: var(--teal-escuro);
+  box-shadow: var(--glow);
 }
 
 .opcao[aria-pressed='true'] .letra {
-  border-color: var(--papel);
+  border-color: var(--teal);
+  background: var(--teal);
+  color: #05231a;
 }
 
 .navegacao {
@@ -337,7 +400,7 @@ a:focus-visible {
   padding: 18px 0 8px;
   position: sticky;
   bottom: 0;
-  background: linear-gradient(to top, var(--papel) 75%, transparent);
+  background: linear-gradient(to top, var(--fundo) 75%, transparent);
 }
 
 .navegacao .botao {
@@ -355,7 +418,8 @@ a:focus-visible {
   display: none;
   background: var(--erro-fundo);
   color: var(--erro);
-  border-radius: 14px;
+  border: 1px solid rgba(255, 123, 114, 0.35);
+  border-radius: 12px;
   padding: 14px 16px;
   font-size: 0.95rem;
   margin-bottom: 16px;
@@ -369,55 +433,58 @@ a:focus-visible {
   margin-bottom: 16px;
 }
 
-/* foco programático (leitores de tela) não precisa de anel visível */
-[tabindex='-1']:focus {
-  outline: none;
-}
-
-/* ---------- resultado ---------- */
-
-body.resultado-dev { background: var(--dev-fundo); }
-body.resultado-qa { background: var(--qa-fundo); }
-body.resultado-negocio { background: var(--negocio-fundo); }
-body.resultado-dados { background: var(--dados-fundo); }
-body.resultado-ia { background: var(--ia-fundo); }
-body.resultado-hibrido { background: var(--hibrido-fundo); }
+/* ---------- resultado ----------
+   Fundo escuro constante; a cor da área entra como energia neon:
+   halo atmosférico, borda do painel, chip e brilho do emoji. */
 
 .resultado {
-  color: #fff;
+  --acento: var(--teal);
   justify-content: center;
   gap: 18px;
   padding: 40px 0;
   text-align: left;
 }
 
-.resultado .marca,
-.resultado .eyebrow {
-  color: rgba(255, 255, 255, 0.75);
+body.resultado-dev .resultado { --acento: var(--dev); }
+body.resultado-qa .resultado { --acento: var(--qa); }
+body.resultado-negocio .resultado { --acento: var(--negocio); }
+body.resultado-dados .resultado { --acento: var(--dados); }
+body.resultado-ia .resultado { --acento: var(--ia); }
+body.resultado-hibrido .resultado { --acento: var(--hibrido); }
+
+.resultado::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: radial-gradient(ellipse 100% 55% at 50% 0%, color-mix(in srgb, var(--acento) 26%, transparent), transparent 70%);
 }
 
 .resultado .emoji {
   font-size: 4.5rem;
   line-height: 1;
+  filter: drop-shadow(0 0 24px color-mix(in srgb, var(--acento) 75%, transparent));
 }
 
 .resultado h2 {
   font-family: var(--fonte-display);
-  font-weight: 800;
-  font-size: clamp(2.2rem, 9vw, 3rem);
+  font-weight: 700;
+  font-size: clamp(2.1rem, 8.5vw, 2.9rem);
   line-height: 1.05;
   letter-spacing: -0.02em;
 }
 
 .resultado .chip {
   align-self: flex-start;
-  font-size: 0.85rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
+  font-family: var(--fonte-mono);
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  border: 1.5px solid rgba(255, 255, 255, 0.55);
+  border: 1px solid var(--acento);
   border-radius: 999px;
   padding: 6px 14px;
+  box-shadow: 0 0 14px color-mix(in srgb, var(--acento) 35%, transparent);
 }
 
 .resultado .descricao {
@@ -426,7 +493,9 @@ body.resultado-hibrido { background: var(--hibrido-fundo); }
 }
 
 .resultado .porque {
-  background: rgba(255, 255, 255, 0.14);
+  background: var(--superficie);
+  border: 1px solid var(--linha);
+  border-left: 3px solid var(--acento);
   border-radius: var(--raio);
   padding: 18px;
   font-size: 0.98rem;
@@ -434,16 +503,18 @@ body.resultado-hibrido { background: var(--hibrido-fundo); }
 
 .resultado .porque strong {
   display: block;
-  font-size: 0.82rem;
-  letter-spacing: 0.1em;
+  font-family: var(--fonte-mono);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   margin-bottom: 8px;
-  color: rgba(255, 255, 255, 0.85);
+  color: var(--texto-suave);
 }
 
 .resultado .nota {
   font-size: 0.9rem;
-  color: rgba(255, 255, 255, 0.75);
+  color: var(--texto-suave);
 }
 
 /* ---------- utilitário ---------- */
@@ -452,5 +523,6 @@ body.resultado-hibrido { background: var(--hibrido-fundo); }
   flex: 1;
   display: grid;
   place-items: center;
-  color: var(--tinta-suave);
+  color: var(--texto-suave);
+  font-family: var(--fonte-mono);
 }
