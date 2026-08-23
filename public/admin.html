@@ -214,6 +214,121 @@
       white-space: nowrap;
     }
     .botao-mini:hover { border-color: var(--teal); color: var(--teal-claro); }
+
+    /* rótulo clicável (drill-down) */
+    .barra-linha .nome-link {
+      font: inherit;
+      text-align: left;
+      background: none;
+      border: none;
+      padding: 0;
+      margin: 0;
+      min-width: 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      color: var(--teal-claro);
+      cursor: pointer;
+      text-decoration: underline;
+      text-decoration-color: rgba(88, 214, 171, 0.4);
+      text-underline-offset: 3px;
+    }
+    .barra-linha .nome-link:hover { color: #fff; text-decoration-color: var(--teal); }
+    .barra-linha .nome-link:focus-visible {
+      outline: 2px solid var(--teal-claro);
+      outline-offset: 2px;
+      border-radius: 4px;
+    }
+
+    /* modal de detalhamento */
+    .modal {
+      width: min(560px, 92vw);
+      max-height: 82vh;
+      padding: 0;
+      border: 1px solid var(--linha);
+      border-radius: 16px;
+      background: var(--superficie);
+      color: var(--texto);
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6), var(--glow);
+      overflow: hidden;
+    }
+    .modal::backdrop {
+      background: rgba(3, 8, 6, 0.72);
+      backdrop-filter: blur(3px);
+    }
+    .modal__cabecalho {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      padding: 20px 20px 12px;
+      border-bottom: 1px solid var(--linha);
+    }
+    .modal__eyebrow {
+      font-family: var(--fonte-mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 4px;
+    }
+    .modal h2 {
+      font-family: var(--fonte-display);
+      font-weight: 700;
+      font-size: 1.3rem;
+      line-height: 1.2;
+    }
+    .modal__fechar {
+      flex: none;
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      border: 1px solid var(--linha);
+      background: transparent;
+      color: var(--texto-suave);
+      font-size: 1rem;
+      line-height: 1;
+      cursor: pointer;
+    }
+    .modal__fechar:hover { border-color: var(--teal); color: var(--teal-claro); }
+    .modal__resumo {
+      padding: 12px 20px;
+      font-family: var(--fonte-mono);
+      font-size: 0.8rem;
+      color: var(--texto-suave);
+    }
+    .modal__lista {
+      padding: 0 20px 20px;
+      overflow-y: auto;
+      max-height: calc(82vh - 140px);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .modal__item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 14px;
+      border: 1px solid var(--linha);
+      border-radius: 12px;
+      background: var(--fundo);
+    }
+    .modal__nome { font-weight: 600; }
+    .modal__sub { font-size: 0.8rem; color: var(--texto-suave); margin-top: 2px; }
+    .modal__tag {
+      flex: none;
+      font-family: var(--fonte-mono);
+      font-size: 0.76rem;
+      font-weight: 500;
+      border: 1px solid var(--cor, var(--linha));
+      border-radius: 999px;
+      padding: 3px 10px;
+      color: var(--texto);
+      box-shadow: 0 0 10px color-mix(in srgb, var(--cor, transparent) 25%, transparent);
+      white-space: nowrap;
+    }
     @media print {
       .acoes, .paineis, .kpis, .tabela-wrap { display: none; }
       body { padding: 0; background: #fff; }
@@ -282,6 +397,18 @@
     </section>
   </div>
 
+  <dialog id="modal" class="modal" aria-labelledby="modal-titulo">
+    <div class="modal__cabecalho">
+      <div>
+        <p class="modal__eyebrow" id="modal-eyebrow"></p>
+        <h2 id="modal-titulo"></h2>
+      </div>
+      <button class="modal__fechar" id="modal-fechar" aria-label="Fechar">✕</button>
+    </div>
+    <p class="modal__resumo" id="modal-resumo"></p>
+    <div class="modal__lista" id="modal-lista"></div>
+  </dialog>
+
   <script>
     const PERFIS = {
       dev: { nome: 'Desenvolvimento', emoji: '💻', cor: 'var(--dev)' },
@@ -308,10 +435,17 @@
       return caixa;
     }
 
-    function linhaBarra({ nome, valor, texto, proporcao, cor, titulo }) {
+    function linhaBarra({ nome, valor, texto, proporcao, cor, titulo, aoClicar }) {
       const linha = el('div', 'barra-linha');
       if (titulo) linha.title = titulo;
-      linha.appendChild(el('span', 'nome', nome));
+      if (aoClicar) {
+        const botao = el('button', 'nome nome-link', nome);
+        botao.type = 'button';
+        botao.addEventListener('click', aoClicar);
+        linha.appendChild(botao);
+      } else {
+        linha.appendChild(el('span', 'nome', nome));
+      }
       const trilha = el('div', 'trilha');
       const preenchido = el('div', 'preenchido');
       preenchido.style.width = `${Math.max(0, Math.min(100, proporcao * 100))}%`;
@@ -336,10 +470,107 @@
       return n.toLocaleString('pt-BR', { maximumFractionDigits: casas, minimumFractionDigits: 0 });
     }
 
+    // ---------- detalhamento (drill-down) ----------
+    const modal = document.getElementById('modal');
+
+    function abrirModal({ eyebrow, titulo, resumo, itens }) {
+      document.getElementById('modal-eyebrow').textContent = eyebrow;
+      document.getElementById('modal-titulo').textContent = titulo;
+      document.getElementById('modal-resumo').textContent = resumo || '';
+      const lista = document.getElementById('modal-lista');
+      lista.innerHTML = '';
+      if (!itens.length) {
+        lista.appendChild(el('p', 'vazio', 'Nenhum candidato ativo neste grupo.'));
+      } else {
+        for (const it of itens) {
+          const item = el('div', 'modal__item');
+          const info = el('div');
+          info.appendChild(el('p', 'modal__nome', it.nome));
+          info.appendChild(el('p', 'modal__sub', it.sub));
+          item.appendChild(info);
+          if (it.tag) {
+            const tag = el('span', 'modal__tag', it.tag.texto);
+            tag.style.setProperty('--cor', it.tag.cor);
+            item.appendChild(tag);
+          }
+          lista.appendChild(item);
+        }
+      }
+      modal.showModal();
+    }
+
+    const ativos = () => (relatorio ? relatorio.candidatos.filter((c) => c.ativo) : []);
+
+    function abrirPerfil(chave) {
+      const itens = ativos()
+        .filter((c) => c.perfil === chave)
+        .map((c) => ({
+          nome: c.nome,
+          sub: `${c.curso} · ${c.periodo} · ${c.whatsapp}`,
+          tag: { texto: `${PERFIS[chave].emoji} ${PERFIS[chave].nome}`, cor: PERFIS[chave].cor },
+        }));
+      abrirModal({
+        eyebrow: 'Candidatos por perfil',
+        titulo: `${PERFIS[chave].emoji} ${PERFIS[chave].nome}`,
+        resumo: `${itens.length} candidato(s) com este perfil.`,
+        itens,
+      });
+    }
+
+    function abrirTecnico(area) {
+      const lista = ativos()
+        .map((c) => ({ c, acertos: c.scores[area] ? c.scores[area].tecnicoAcertos : 0 }))
+        .sort((a, b) => b.acertos - a.acertos);
+      const totalAcertos = lista.reduce((s, x) => s + x.acertos, 0);
+      const maxPossivel = lista.length * 2;
+      const pct = maxPossivel ? Math.round((totalAcertos / maxPossivel) * 100) : 0;
+      const corAcerto = (n) => (n === 2 ? 'var(--qa)' : n === 1 ? 'var(--negocio)' : 'var(--texto-suave)');
+      const itens = lista.map(({ c, acertos }) => ({
+        nome: c.nome,
+        sub: `${c.periodo} · ${c.whatsapp}`,
+        tag: { texto: `${acertos}/2 acertos`, cor: corAcerto(acertos) },
+      }));
+      abrirModal({
+        eyebrow: 'Acerto técnico por área',
+        titulo: `${PERFIS[area].emoji} ${PERFIS[area].nome}`,
+        resumo: `${totalAcertos} de ${maxPossivel} respostas certas · ${pct}% de acerto`,
+        itens,
+      });
+    }
+
+    function abrirIndice(indice) {
+      const itens = ativos()
+        .filter((c) => c.indiceIA === indice)
+        .map((c) => ({
+          nome: c.nome,
+          sub: `${c.curso} · ${c.periodo} · ${c.whatsapp}`,
+          tag: { texto: `Índice ${indice}`, cor: 'var(--teal)' },
+        }));
+      abrirModal({
+        eyebrow: 'Maturidade em IA',
+        titulo: `Índice ${indice} de 6`,
+        resumo: `${itens.length} candidato(s) com este índice de familiaridade.`,
+        itens,
+      });
+    }
+
+    document.getElementById('modal-fechar').addEventListener('click', () => modal.close());
+    // fecha ao clicar fora do conteúdo (no backdrop)
+    modal.addEventListener('click', (evento) => {
+      const r = modal.getBoundingClientRect();
+      const dentro =
+        evento.clientX >= r.left && evento.clientX <= r.right &&
+        evento.clientY >= r.top && evento.clientY <= r.bottom;
+      if (!dentro) modal.close();
+    });
+
+    let relatorio = null; // guarda o último /api/relatorio p/ o detalhamento (drill-down)
+
     async function carregar() {
       const resposta = await fetch('/api/relatorio');
       if (!resposta.ok) throw new Error('Falha ao carregar o relatório.');
       const dados = await resposta.json();
+      relatorio = dados;
 
       // KPIs
       const kpis = document.getElementById('kpis');
@@ -380,7 +611,8 @@
           texto: String(dados.porPerfil[chave] ?? 0),
           proporcao: (dados.porPerfil[chave] ?? 0) / maxPerfil,
           cor: PERFIS[chave].cor,
-          titulo: `${PERFIS[chave].nome}: ${dados.porPerfil[chave] ?? 0} candidato(s)`,
+          titulo: `Ver candidatos — ${PERFIS[chave].nome}: ${dados.porPerfil[chave] ?? 0} candidato(s)`,
+          aoClicar: () => abrirPerfil(chave),
         }))
       );
 
@@ -393,7 +625,8 @@
           texto: `${formatarNumero(dados.pctAcertoTecnico[area], 0)}%`,
           proporcao: dados.pctAcertoTecnico[area] / 100,
           cor: PERFIS[area].cor,
-          titulo: `${PERFIS[area].nome}: ${formatarNumero(dados.pctAcertoTecnico[area])}% de acerto`,
+          titulo: `Ver candidatos — ${PERFIS[area].nome}: ${formatarNumero(dados.pctAcertoTecnico[area])}% de acerto`,
+          aoClicar: () => abrirTecnico(area),
         }))
       );
 
@@ -407,7 +640,8 @@
           texto: String(quantidade),
           proporcao: quantidade / maxIndice,
           cor: 'var(--teal)',
-          titulo: `${quantidade} candidato(s) com índice ${indice}`,
+          titulo: `Ver candidatos — índice ${indice}: ${quantidade} candidato(s)`,
+          aoClicar: () => abrirIndice(indice),
         }))
       );
 
