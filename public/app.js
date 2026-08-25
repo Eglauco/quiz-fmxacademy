@@ -159,6 +159,9 @@
     if (whatsappDigitos.length < 10 || whatsappDigitos.length > 11) {
       return { erro: 'Informe seu WhatsApp com DDD + número (ex.: 11 91234-5678) — é por ele que daremos o retorno.' };
     }
+    if (!$('campo-consentimento').checked) {
+      return { erro: 'É necessário ler e aceitar o Aviso de Privacidade para continuar.' };
+    }
 
     return {
       dados: { nome, curso, cursoOutro: curso === 'Outro' ? cursoOutro : null, periodo, whatsapp },
@@ -214,7 +217,7 @@
     for (const pergunta of estado.perguntas) {
       blocos[pergunta.etapaId][pergunta.id] = estado.respostas[pergunta.id];
     }
-    return { identificacao: estado.identificacao, ...blocos };
+    return { identificacao: estado.identificacao, consentimento: { aceito: true }, ...blocos };
   }
 
   function reabilitarEnvio() {
@@ -284,6 +287,11 @@
 
   $('campo-curso').addEventListener('change', () => {
     $('campo-curso-outro-wrap').hidden = $('campo-curso').value !== 'Outro';
+  });
+
+  // Botão "Ir para as perguntas" só habilita com o consentimento marcado.
+  $('campo-consentimento').addEventListener('change', () => {
+    $('botao-ir-perguntas').disabled = !$('campo-consentimento').checked;
   });
 
   $('campo-whatsapp').addEventListener('input', (evento) => {

@@ -444,6 +444,71 @@ a:focus-visible {
   box-shadow: 0 0 0 3px rgba(44, 175, 135, 0.18);
 }
 
+/* ---------- privacidade / consentimento (LGPD) ---------- */
+
+.privacidade-aviso {
+  background: var(--superficie);
+  border: 1px solid var(--linha);
+  border-left: 3px solid var(--teal);
+  border-radius: 12px;
+  padding: 14px 16px;
+  margin-bottom: 16px;
+}
+
+.privacidade-aviso p {
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: var(--texto-suave);
+}
+
+.privacidade-aviso strong {
+  color: var(--texto);
+}
+
+.consentimento {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 20px;
+  font-size: 0.9rem;
+  line-height: 1.45;
+  color: var(--texto);
+  cursor: pointer;
+}
+
+.consentimento input[type='checkbox'] {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  margin-top: 1px;
+  accent-color: var(--teal);
+  cursor: pointer;
+}
+
+.privacidade-aviso a,
+.consentimento a,
+.resultado .nota a {
+  color: var(--teal-claro);
+  text-underline-offset: 2px;
+}
+
+.rodape {
+  padding: 22px 0 6px;
+  text-align: center;
+}
+
+.rodape a {
+  font-family: var(--fonte-mono);
+  font-size: 0.74rem;
+  letter-spacing: 0.08em;
+  color: var(--texto-suave);
+  text-underline-offset: 3px;
+}
+
+.rodape a:hover {
+  color: var(--teal-claro);
+}
+
 /* ---------- perguntas ---------- */
 
 .progresso {

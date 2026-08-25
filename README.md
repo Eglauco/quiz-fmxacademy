@@ -22,8 +22,9 @@ A especificação das perguntas e da regra de pontuação está em
 | Rota | O que é |
 |---|---|
 | `/` | Questionário (o link do QR Code) |
+| `/privacidade` | Aviso de Privacidade (LGPD) |
 | `/admin` | Relatórios, estatísticas e QR Code para impressão |
-| `/api/relatorio.csv` | Exportação da tabulação completa (abre no Excel) |
+| `/api/relatorio.csv` | Exportação da tabulação completa, com a prova de consentimento (abre no Excel) |
 
 ## Rodando localmente
 

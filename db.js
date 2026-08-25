@@ -17,6 +17,10 @@ const SCHEMA = `
     indice_ia INTEGER NOT NULL,
     acertou_limitacoes_ia BOOLEAN NOT NULL,
     ativo BOOLEAN NOT NULL DEFAULT true,
+    consentimento_aceito BOOLEAN NOT NULL DEFAULT false,
+    consentimento_versao TEXT,
+    consentimento_ip TEXT,
+    consentimento_em TIMESTAMPTZ,
     criado_em TIMESTAMPTZ NOT NULL DEFAULT now()
   );
 `;
@@ -27,6 +31,10 @@ const SCHEMA = `
 // WhatsApp para responder novamente.
 const MIGRACOES = [
   `ALTER TABLE respostas ADD COLUMN IF NOT EXISTS ativo BOOLEAN NOT NULL DEFAULT true`,
+  `ALTER TABLE respostas ADD COLUMN IF NOT EXISTS consentimento_aceito BOOLEAN NOT NULL DEFAULT false`,
+  `ALTER TABLE respostas ADD COLUMN IF NOT EXISTS consentimento_versao TEXT`,
+  `ALTER TABLE respostas ADD COLUMN IF NOT EXISTS consentimento_ip TEXT`,
+  `ALTER TABLE respostas ADD COLUMN IF NOT EXISTS consentimento_em TIMESTAMPTZ`,
   `DROP INDEX IF EXISTS respostas_email_unico`,
   `DROP INDEX IF EXISTS respostas_whatsapp_unico`,
   `CREATE UNIQUE INDEX IF NOT EXISTS respostas_whatsapp_unico_ativo
@@ -103,6 +111,10 @@ function criarRepositorioPostgres(databaseUrl) {
         indiceIA: row.indice_ia,
         acertouLimitacoesIA: row.acertou_limitacoes_ia,
         ativo: row.ativo,
+        consentimentoAceito: row.consentimento_aceito,
+        consentimentoVersao: row.consentimento_versao,
+        consentimentoIp: row.consentimento_ip,
+        consentimentoEm: row.consentimento_em,
         criadoEm: row.criado_em,
       }));
     },
@@ -112,8 +124,9 @@ function criarRepositorioPostgres(databaseUrl) {
       const { rows } = await pool.query(
         `INSERT INTO respostas
            (nome, curso, curso_outro, periodo, whatsapp, whatsapp_norm,
-            respostas, scores, perfil, indice_ia, acertou_limitacoes_ia)
-         VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)
+            respostas, scores, perfil, indice_ia, acertou_limitacoes_ia,
+            consentimento_aceito, consentimento_versao, consentimento_ip, consentimento_em)
+         VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,now())
          RETURNING id, criado_em`,
         [
           r.nome,
@@ -127,6 +140,9 @@ function criarRepositorioPostgres(databaseUrl) {
           r.perfil,
           r.indiceIA,
           r.acertouLimitacoesIA,
+          r.consentimentoAceito,
+          r.consentimentoVersao,
+          r.consentimentoIp,
         ]
       );
       return { id: rows[0].id, criadoEm: rows[0].criado_em };
@@ -159,7 +175,8 @@ function criarRepositorioMemoria() {
     async inserir(r) {
       // Recheca no momento da gravação, espelhando o índice UNIQUE do Postgres.
       if (contatoJaExiste(r.whatsappNorm)) throw erroDuplicado();
-      const registro = { ...r, ativo: true, id: proximoId++, criadoEm: new Date() };
+      const agora = new Date();
+      const registro = { ...r, ativo: true, id: proximoId++, consentimentoEm: agora, criadoEm: agora };
       registros.push(registro);
       return { id: registro.id, criadoEm: registro.criadoEm };
     },

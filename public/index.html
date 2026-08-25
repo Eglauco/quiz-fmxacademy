@@ -44,7 +44,7 @@
       </div>
       <form class="form" id="form-dados" novalidate>
         <h2>Quem é você?</h2>
-        <p class="apoio">Usamos esses dados só para dar retorno sobre o processo seletivo.</p>
+        <p class="apoio">Usamos esses dados só para gerar seu resultado e dar retorno sobre o processo.</p>
 
         <div class="erro" id="erro-dados" role="alert"></div>
 
@@ -77,9 +77,29 @@
           <input id="campo-whatsapp" name="whatsapp" type="tel" autocomplete="tel" inputmode="tel" placeholder="(11) 91234-5678" required />
         </div>
 
+        <div class="privacidade-aviso">
+          <p>
+            <strong>Privacidade:</strong> seus dados (nome, curso, período e WhatsApp) e suas
+            respostas serão usados pela FMX Academy apenas para gerar seu resultado e entrar em
+            contato sobre este processo. Não vendemos nem repassamos seus dados para terceiros
+            com fins comerciais. Você pode pedir acesso ou exclusão a qualquer momento em
+            <a href="/privacidade" target="_blank" rel="noopener">dpo.fmx@fmxsolucoes.com.br</a>.
+          </p>
+        </div>
+
+        <label class="consentimento" for="campo-consentimento">
+          <input type="checkbox" id="campo-consentimento" name="consentimento" required />
+          <span>
+            Li e concordo com o
+            <a href="/privacidade" target="_blank" rel="noopener">Aviso de Privacidade</a>
+            e autorizo a FMX Academy a tratar meus dados e minhas respostas para gerar meu
+            resultado e me contatar pelo WhatsApp informado sobre este processo.
+          </span>
+        </label>
+
         <div class="navegacao">
           <button type="button" class="botao botao--fantasma" id="botao-voltar-inicio">Voltar</button>
-          <button type="submit" class="botao">Ir para as perguntas</button>
+          <button type="submit" class="botao" id="botao-ir-perguntas" disabled>Ir para as perguntas</button>
         </div>
       </form>
     </section>
@@ -118,12 +138,21 @@
         <span id="resultado-porque"></span>
       </div>
       <p class="nota">Resposta registrada! A equipe da FMX Academy vai falar com você pelo contato informado. 💬</p>
+      <p class="nota">
+        Não quer mais que a gente guarde suas respostas? Escreva para
+        <a href="/privacidade" target="_blank" rel="noopener">dpo.fmx@fmxsolucoes.com.br</a>
+        e apagamos tudo.
+      </p>
     </section>
 
     <!-- Carregando -->
     <section id="tela-carregando" class="tela">
       <div class="carregando"><p id="texto-carregando">Carregando…</p></div>
     </section>
+
+    <footer class="rodape">
+      <a href="/privacidade" target="_blank" rel="noopener">Aviso de Privacidade</a>
+    </footer>
 
   </div>
   <script src="app.js"></script>

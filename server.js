@@ -18,6 +18,10 @@ const { criarRepositorio } = require('./db');
 const app = express();
 const repositorio = criarRepositorio();
 
+// Versão do Aviso de Privacidade vigente — gravada junto com o consentimento como
+// prova (art. 8º, §2º). Ao alterar o texto de /privacidade, incremente aqui.
+const AVISO_VERSAO = 'v1-2026-08';
+
 app.set('trust proxy', true);
 app.use(express.json());
 
@@ -85,6 +89,10 @@ app.get('/admin', (_req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'admin.html'));
 });
 
+app.get('/privacidade', (_req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'privacidade.html'));
+});
+
 // ---------------------------------------------------------------------------
 // Questionário (versão pública, sem gabarito)
 // ---------------------------------------------------------------------------
@@ -123,6 +131,11 @@ function validarEnvio(body) {
 
   const periodo = String(id.periodo ?? '');
   if (!PERIODOS.includes(periodo)) return { erro: 'Selecione um período válido.' };
+
+  // Consentimento LGPD é obrigatório para o tratamento (art. 7º, I / art. 8º).
+  if (body.consentimento?.aceito !== true) {
+    return { erro: 'É necessário ler e aceitar o Aviso de Privacidade para enviar suas respostas.' };
+  }
 
   const whatsapp = String(id.whatsapp ?? '').trim();
   const whatsappNorm = normalizarWhatsapp(whatsapp);
@@ -190,6 +203,11 @@ app.post('/api/respostas', async (req, res) => {
         perfil: resultado.perfil,
         indiceIA: resultado.indiceIA,
         acertouLimitacoesIA: resultado.acertouLimitacoesIA,
+        // Prova do consentimento: a versão do aviso e o IP são definidos pelo
+        // servidor (não confiamos no cliente); o horário é gravado no INSERT.
+        consentimentoAceito: true,
+        consentimentoVersao: AVISO_VERSAO,
+        consentimentoIp: req.ip || null,
       });
     } catch (err) {
       // Corrida entre existeContato e inserir: o índice UNIQUE do banco decide.
@@ -316,6 +334,7 @@ app.get('/api/relatorio.csv', async (_req, res) => {
 
     const cabecalho = [
       'id', 'data', 'nome', 'curso', 'curso_outro', 'periodo', 'whatsapp', 'perfil', 'ativo',
+      'consentimento', 'consentimento_versao', 'consentimento_em', 'consentimento_ip',
       ...AREAS.flatMap((a) => [`${a}_total`, `${a}_tecnico`, `${a}_comportamental`]),
       'indice_ia', 'acertou_limitacoes_ia',
       ...COMPORTAMENTAL.map((q) => q.id),
@@ -334,6 +353,10 @@ app.get('/api/relatorio.csv', async (_req, res) => {
         r.whatsapp,
         r.perfil,
         r.ativo ? 'sim' : 'nao',
+        r.consentimentoAceito ? 'sim' : 'nao',
+        r.consentimentoVersao ?? '',
+        r.consentimentoEm ? new Date(r.consentimentoEm).toISOString() : '',
+        r.consentimentoIp ?? '',
         ...AREAS.flatMap((a) => [
           numero(r.scores[a].total),
           numero(r.scores[a].tecnico),
